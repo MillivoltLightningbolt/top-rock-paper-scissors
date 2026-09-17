@@ -39,6 +39,10 @@ let computerScore = 0;
   // ELSE IF winner is computer
   //    PRINT you lose, <computer choice> beats <human choice>
 
+function displayScore() {
+  console.log(`Score:\nPlayer:   ${humanScore}\nComputer: ${computerScore}`);
+}
+
 function playRound(humanChoice, computerChoice) {
   humanChoice = humanChoice.toLowerCase();
   computerChoice = computerChoice.toLowerCase();
@@ -46,6 +50,7 @@ function playRound(humanChoice, computerChoice) {
 
   if (humanChoice === computerChoice) {
     console.log(`Tie! You both chose ${computerChoice}`); // print computer choice to make any potential bug obvious
+    // displayScore(); // TODO: remove
     return
   }
 
@@ -68,6 +73,7 @@ function playRound(humanChoice, computerChoice) {
   } else {
     console.log(`You lose! ${humanChoice} gets beaten by ${computerChoice}`);
   }
+  // displayScore(); // TODO: remove
 }
 
 console.log("Testing all possible combinations of the game:");
