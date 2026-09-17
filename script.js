@@ -4,6 +4,9 @@ const SCISSOR = "scissor";
 const HUMAN = "human";
 const COMPUTER = "computer";
 
+let humanScore = 0;
+let computerScore = 0;
+
 function getComputerChoice() {
   let choice = Math.random() * 3;
   if (choice < 1) {
@@ -19,9 +22,6 @@ function getHumanChoice() {
   let humanChoice = prompt(`Pick: ${ROCK} ${PAPER} or ${SCISSOR}:`);
   return humanChoice;
 }
-
-let humanScore = 0;
-let computerScore = 0;
 
   //// pseudocode for playRound()
   //
@@ -39,8 +39,15 @@ let computerScore = 0;
   // ELSE IF winner is computer
   //    PRINT you lose, <computer choice> beats <human choice>
 
-function displayScore() {
-  console.log(`Score:\nPlayer:   ${humanScore}\nComputer: ${computerScore}`);
+function displayFinalScore() {
+  console.log(`Score:\nPlayer:   ${humanScore}\nComputer: ${computerScore}\n`);
+  if (humanScore > computerScore) {
+    console.log("You win!");
+  } else if (computerScore > humanScore) {
+    console.log("You lose!");
+  } else {
+    console.log("Tie!");
+  }
 }
 
 function playRound(humanChoice, computerChoice) {
@@ -50,7 +57,6 @@ function playRound(humanChoice, computerChoice) {
 
   if (humanChoice === computerChoice) {
     console.log(`Tie! You both chose ${computerChoice}`); // print computer choice to make any potential bug obvious
-    // displayScore(); // TODO: remove
     return
   }
 
@@ -73,22 +79,50 @@ function playRound(humanChoice, computerChoice) {
   } else {
     console.log(`You lose! ${humanChoice} gets beaten by ${computerChoice}`);
   }
-  // displayScore(); // TODO: remove
 }
 
-console.log("Testing all possible combinations of the game:");
+// console.log("Testing all possible combinations of the game:");
+//
+// // ties
+// playRound(ROCK, ROCK);
+// playRound(SCISSOR, SCISSOR);
+// playRound(PAPER, PAPER);
+//
+// // human wins
+// playRound(ROCK, SCISSOR);
+// playRound(SCISSOR, PAPER);
+// playRound(PAPER, ROCK);
+//
+// // computer wins
+// playRound(SCISSOR, ROCK);
+// playRound(PAPER, SCISSOR);
+// playRound(ROCK, PAPER);
 
-// ties
-playRound(ROCK, ROCK);
-playRound(SCISSOR, SCISSOR);
-playRound(PAPER, PAPER);
+  /// pseudocode for playGame()
+  //
+  // INIT both scores to 0
+  // DECLARE player choice and computer choice
+  // LOOP 5 times
+  //    SET player choice
+  //    SET computer choice
+  //    CALL playRound
+  // ENDLOOP
+  // PRINT winner
 
-// human wins
-playRound(ROCK, SCISSOR);
-playRound(SCISSOR, PAPER);
-playRound(PAPER, ROCK);
+function playGame() {
+  humanScore = 0;
+  computerScore = 0;
 
-// computer wins
-playRound(SCISSOR, ROCK);
-playRound(PAPER, SCISSOR);
-playRound(ROCK, PAPER);
+  let humanSelection;
+  let computerSelection;
+
+  for (let i=0; i < 5; i++) {
+    humanSelection = getHumanChoice();
+    computerSelection = getComputerChoice();
+    playRound(humanSelection, computerSelection);
+  }
+
+  displayFinalScore();
+}
+
+playGame();
