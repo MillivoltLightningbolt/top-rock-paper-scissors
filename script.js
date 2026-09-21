@@ -1,46 +1,43 @@
+// choices per round
 const ROCK = "rock";
 const PAPER = "paper";
-const SCISSOR = "scissor";
-const HUMAN = "human";
-const COMPUTER = "computer";
+const SCISSORS = "scissors";
 
 let humanScore = 0;
 let computerScore = 0;
 
 function getComputerChoice() {
-  let choice = Math.random() * 3;
+  // since the random float returned by Math.random()
+  // includes zero but excludes 1, i.e. [0, 1)
+  // we also use less-than for the other two boundaries
+  // instead of less-than-or-equal to give the 3 ranges
+  // [0, 1)
+  // [1, 2)
+  // [2, 3)
+  const choice = Math.random() * 3;
   if (choice < 1) {
-    return ROCK
+    return ROCK;
   } else if (choice < 2) {
-    return PAPER
+    return PAPER;
   } else {
-    return SCISSOR
+    return SCISSORS;
   }
 }
 
+// NOTE: there's intentionally no validation or validation,
+//       => in the future the player will select an option
+//       via a UI (e.g. buttons) on a webpage.
+//       But if we wanted to validate then we'd have to:
+//       1. handle null (in case user hits escape)
+//       2. map to constants (ROCK, PAPER or SCISSORS) for single source of truth
+//       3. handle undefined | invalid input
 function getHumanChoice() {
-  let humanChoice = prompt(`Pick: ${ROCK} ${PAPER} or ${SCISSOR}:`);
-  return humanChoice;
+  const userInput = prompt(`Pick: ${ROCK} ${PAPER} or ${SCISSORS}`, ROCK);
+  return userInput.trim().toLowerCase();
 }
 
-  //// pseudocode for playRound()
-  //
-  // TRANSFORM both choices into lowercase versions (for case insensitive comparison)
-  // INIT winner with null;
-  // IF botch chose the same option: PASS (tie -> don't increase either points)
-  // ELSE IF human win (rock > scissor > paper > rock):
-  //    INCREMENT human score
-  //    SET winner to human
-  // ELSE:
-  //    INCREMENT computer score
-  //    SET winner to computer
-  // IF winner is human
-  //    PRINT you win, <human choice> beats <computer choice>
-  // ELSE IF winner is computer
-  //    PRINT you lose, <computer choice> beats <human choice>
-
 function displayFinalScore() {
-  console.log(`Score:\nPlayer:   ${humanScore}\nComputer: ${computerScore}\n`);
+  console.log(`FINAL SCORE:\nPlayer: ${humanScore}\nComputer: ${computerScore}`);
   if (humanScore > computerScore) {
     console.log("You win!");
   } else if (computerScore > humanScore) {
@@ -51,74 +48,37 @@ function displayFinalScore() {
 }
 
 function playRound(humanChoice, computerChoice) {
-  humanChoice = humanChoice.toLowerCase();
-  computerChoice = computerChoice.toLowerCase();
-  let winner = null;
-
   if (humanChoice === computerChoice) {
-    console.log(`Tie! You both chose ${computerChoice}`); // print computer choice to make any potential bug obvious
-    return
+    console.log(`Tie! You both chose ${humanChoice}`);
+    return;
   }
 
-  let humanWin = (
-    (humanChoice === ROCK && computerChoice === SCISSOR)      // rock crushes scissor
-    || (humanChoice === SCISSOR && computerChoice === PAPER)  // scissor cuts paper
-    || (humanChoice === PAPER && computerChoice === ROCK)     // paper wraps rock
+  const humanWonRound = (
+    (humanChoice === ROCK && computerChoice === SCISSORS)      // rock crushes scissors
+    || (humanChoice === SCISSORS && computerChoice === PAPER)  // scissors cuts paper
+    || (humanChoice === PAPER && computerChoice === ROCK)      // paper covers rock
   );
 
-  if (humanWin) {
+  if (humanWonRound) {
     humanScore++;
-    winner = HUMAN;
-  } else {
-    computerScore++;
-    winner = COMPUTER;
-  }
-
-  if (winner === HUMAN) {
     console.log(`You win! ${humanChoice} beats ${computerChoice}`);
   } else {
+    computerScore++;
     console.log(`You lose! ${humanChoice} gets beaten by ${computerChoice}`);
   }
 }
 
-// console.log("Testing all possible combinations of the game:");
-//
-// // ties
-// playRound(ROCK, ROCK);
-// playRound(SCISSOR, SCISSOR);
-// playRound(PAPER, PAPER);
-//
-// // human wins
-// playRound(ROCK, SCISSOR);
-// playRound(SCISSOR, PAPER);
-// playRound(PAPER, ROCK);
-//
-// // computer wins
-// playRound(SCISSOR, ROCK);
-// playRound(PAPER, SCISSOR);
-// playRound(ROCK, PAPER);
-
-  /// pseudocode for playGame()
-  //
-  // INIT both scores to 0
-  // DECLARE player choice and computer choice
-  // LOOP 5 times
-  //    SET player choice
-  //    SET computer choice
-  //    CALL playRound
-  // ENDLOOP
-  // PRINT winner
+function isGameOver() {
+  return (humanScore >= 5 || computerScore >= 5);
+}
 
 function playGame() {
   humanScore = 0;
   computerScore = 0;
 
-  let humanSelection;
-  let computerSelection;
-
-  for (let i=0; i < 5; i++) {
-    humanSelection = getHumanChoice();
-    computerSelection = getComputerChoice();
+  while (!isGameOver()) {
+    const humanSelection = getHumanChoice();
+    const computerSelection = getComputerChoice();
     playRound(humanSelection, computerSelection);
   }
 
