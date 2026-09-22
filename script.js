@@ -3,6 +3,12 @@ const ROCK = "rock";
 const PAPER = "paper";
 const SCISSORS = "scissors";
 
+// possible outcomes
+const TIE = 0;
+const HUMAN_WON = 1;
+const COMPUTER_WON = 2;
+
+// first to reach this many points wins
 const NUMBER_OF_ROUNDS = 5;
 
 let humanScore = 0;
@@ -49,10 +55,19 @@ function displayFinalResult() {
   }
 }
 
+function displayRoundResult(result, humanChoice, computerChoice) {
+    if (result === TIE) {
+        console.log(`Tie! You both chose ${humanChoice}`);
+    } else if (result === HUMAN_WON) {
+        console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+    } else {
+        console.log(`You lose! ${humanChoice} gets beaten by ${computerChoice}`);
+    }
+}
+
 function playRound(humanChoice, computerChoice) {
   if (humanChoice === computerChoice) {
-    console.log(`Tie! You both chose ${humanChoice}`);
-    return;
+    return TIE;
   }
 
   const humanWonRound = (
@@ -63,10 +78,10 @@ function playRound(humanChoice, computerChoice) {
 
   if (humanWonRound) {
     humanScore++;
-    console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+    return HUMAN_WON;
   } else {
     computerScore++;
-    console.log(`You lose! ${humanChoice} gets beaten by ${computerChoice}`);
+    return COMPUTER_WON;
   }
 }
 
@@ -81,7 +96,8 @@ function playGame() {
   while (!isGameOver()) {
     const humanSelection = getHumanChoice();
     const computerSelection = getComputerChoice();
-    playRound(humanSelection, computerSelection);
+    const result = playRound(humanSelection, computerSelection);
+    displayRoundResult(result, humanSelection, computerSelection);
   }
 
   displayFinalResult();
