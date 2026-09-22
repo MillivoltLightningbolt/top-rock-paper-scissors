@@ -24,7 +24,7 @@ function getComputerChoice() {
   }
 }
 
-// NOTE: there's intentionally no validation or validation,
+// NOTE: there's intentionally no validation!
 //       => in the future the player will select an option
 //       via a UI (e.g. buttons) on a webpage.
 //       But if we wanted to validate then we'd have to:
