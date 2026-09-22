@@ -3,6 +3,8 @@ const ROCK = "rock";
 const PAPER = "paper";
 const SCISSORS = "scissors";
 
+const NUMBER_OF_ROUNDS = 5;
+
 let humanScore = 0;
 let computerScore = 0;
 
@@ -69,7 +71,7 @@ function playRound(humanChoice, computerChoice) {
 }
 
 function isGameOver() {
-  return (humanScore >= 5 || computerScore >= 5);
+  return (humanScore >= NUMBER_OF_ROUNDS || computerScore >= NUMBER_OF_ROUNDS);
 }
 
 function playGame() {
