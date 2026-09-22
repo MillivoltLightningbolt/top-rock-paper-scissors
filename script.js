@@ -94,10 +94,10 @@ function playGame() {
   computerScore = 0;
 
   while (!isGameOver()) {
-    const humanSelection = getHumanChoice();
-    const computerSelection = getComputerChoice();
-    const result = playRound(humanSelection, computerSelection);
-    displayRoundResult(result, humanSelection, computerSelection);
+    const humanChoice = getHumanChoice();
+    const computerChoice = getComputerChoice();
+    const result = playRound(humanChoice, computerChoice);
+    displayRoundResult(result, humanChoice, computerChoice);
   }
 
   displayFinalResult();
