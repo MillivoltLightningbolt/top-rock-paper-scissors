@@ -36,7 +36,7 @@ function getHumanChoice() {
   return userInput.trim().toLowerCase();
 }
 
-function displayFinalScore() {
+function displayFinalResult() {
   console.log(`FINAL SCORE:\nPlayer: ${humanScore}\nComputer: ${computerScore}`);
   if (humanScore > computerScore) {
     console.log("You win!");
@@ -82,7 +82,7 @@ function playGame() {
     playRound(humanSelection, computerSelection);
   }
 
-  displayFinalScore();
+  displayFinalResult();
 }
 
 playGame();
